@@ -7,9 +7,29 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       use-new-id-generator-mappings: false
     properties:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 50
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
