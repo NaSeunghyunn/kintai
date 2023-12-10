@@ -3,9 +3,11 @@ package com.kintai.kintai.domain.entity;
 import com.kintai.kintai.domain.WorkType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,7 +30,7 @@ public class KintaiDetail extends BaseEntity {
     private Kintai kintai;
 
     @Column(nullable = false)
-    private String dayOfWeek;
+    private DayOfWeek dayOfWeek;
 
     @Column(nullable = false)
     private LocalDateTime startTime;
@@ -36,8 +38,7 @@ public class KintaiDetail extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime endTime;
 
-    @Column(nullable = false)
-    private LocalTime breakTime;
+    private int breakTimeHours;
 
     @Enumerated(STRING)
     private WorkType workType;
@@ -45,4 +46,17 @@ public class KintaiDetail extends BaseEntity {
     private String workDesc;
 
     private String note;
+
+    @Builder
+    public KintaiDetail(Long id, Kintai kintai, DayOfWeek dayOfWeek, LocalDateTime startTime, LocalDateTime endTime, int breakTimeHours, WorkType workType, String workDesc, String note) {
+        this.id = id;
+        this.kintai = kintai;
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.breakTimeHours = breakTimeHours;
+        this.workType = workType;
+        this.workDesc = workDesc;
+        this.note = note;
+    }
 }
