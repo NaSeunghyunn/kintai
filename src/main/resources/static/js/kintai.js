@@ -18,14 +18,6 @@ const api = {
             .then(() => totalWorkTime());
     },
 
-    save: function() {
-        let body = {
-            "yearMonth" : $("#yearMonth").val()
-        };
-        commonMethod.fetchPost(URL_KINTAI, body)
-            .then(data => console.log(data));
-    },
-
     saveDetail: function() {
         let body = {
                     "kintaiId" : $("#kintai-id").val(),
@@ -198,6 +190,7 @@ function init() {
         $("#detail-end-hour").val(isVacationFlg ? "" : "18");
         $("#detail-end-minute").val(isVacationFlg ? "" : "00");
         $("#detail-break-time").val(isVacationFlg ? "" : "1");
+        $("#detail-work-time").text(isVacationFlg ? "0" : "8");
     });
 
     $("#detail-day").on('change', function() {
