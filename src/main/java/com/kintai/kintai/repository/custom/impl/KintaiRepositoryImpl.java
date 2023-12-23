@@ -1,5 +1,7 @@
 package com.kintai.kintai.repository.custom.impl;
 
+import com.kintai.kintai.domain.entity.Kintai;
+import com.kintai.kintai.domain.entity.Member;
 import com.kintai.kintai.dto.KintaiDetailDto;
 import com.kintai.kintai.dto.KintaiDto;
 import com.kintai.kintai.repository.custom.KintaiRepositoryCustom;
@@ -21,16 +23,16 @@ import static com.querydsl.core.group.GroupBy.list;
 public class KintaiRepositoryImpl implements KintaiRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
-    public KintaiDto findKintaiOfMonth(Long memberId, YearMonth yearMonth) {
+    public KintaiDto findKintaiOfMonth(Long kintaiId) {
         return queryFactory.selectFrom(kintai)
                 .innerJoin(kintai.member, member)
-                .leftJoin(kintaiDetail)
+                .innerJoin(kintaiDetail)
                 .on(kintaiDetail.kintai.eq(kintai))
                 .where(
-                        kintai.member.id.eq(memberId),
-                        kintai.workYearMonth.eq(yearMonth)
+                        kintai.id.eq(kintaiId)
                 )
-                .transform(groupBy(member.id).as(Projections.constructor(
+                .orderBy(kintaiDetail.startTime.asc())
+                .transform(groupBy(kintai.id).as(Projections.constructor(
                         KintaiDto.class,
                         kintai.id,
                         member.name,
@@ -38,7 +40,7 @@ public class KintaiRepositoryImpl implements KintaiRepositoryCustom {
                         list(Projections.constructor(
                                         KintaiDetailDto.class,
                                         kintaiDetail.id,
-                                        kintaiDetail.dayOfWeek,
+                                        kintaiDetail.date,
                                         kintaiDetail.startTime,
                                         kintaiDetail.endTime,
                                         kintaiDetail.breakTimeHours,
@@ -47,6 +49,17 @@ public class KintaiRepositoryImpl implements KintaiRepositoryCustom {
                                         kintaiDetail.note
                                 )
                         )
-                ))).get(memberId);
+                ))).get(kintaiId);
+    }
+
+    @Override
+    public Long findKintaiIdOfMonth(Long memberId, YearMonth yearMonth) {
+        return queryFactory
+                .select(kintai.id)
+                .from(kintai)
+                .where(
+                        kintai.member.id.eq(memberId)
+                        , kintai.workYearMonth.eq(yearMonth)
+                ).fetchFirst();
     }
 }

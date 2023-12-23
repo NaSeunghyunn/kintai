@@ -14,6 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"member_id", "workYearMonth"})})
 @Entity
 public class Kintai extends BaseEntity {
 

@@ -30,13 +30,11 @@ public class KintaiDetail extends BaseEntity {
     private Kintai kintai;
 
     @Column(nullable = false)
-    private DayOfWeek dayOfWeek;
+    private LocalDate date;
 
-    @Column(nullable = false)
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
-    @Column(nullable = false)
-    private LocalDateTime endTime;
+    private LocalTime endTime;
 
     private int breakTimeHours;
 
@@ -48,10 +46,10 @@ public class KintaiDetail extends BaseEntity {
     private String note;
 
     @Builder
-    public KintaiDetail(Long id, Kintai kintai, DayOfWeek dayOfWeek, LocalDateTime startTime, LocalDateTime endTime, int breakTimeHours, WorkType workType, String workDesc, String note) {
+    public KintaiDetail(Long id, Kintai kintai, LocalDate date, LocalTime startTime, LocalTime endTime, int breakTimeHours, WorkType workType, String workDesc, String note) {
         this.id = id;
         this.kintai = kintai;
-        this.dayOfWeek = dayOfWeek;
+        this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.breakTimeHours = breakTimeHours;

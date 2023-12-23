@@ -1,0 +1,33 @@
+#kintaiDetailModal{
+    border: 1px solid #cdc3c3;
+    border-radius: 10px;
+}
+
+.kintai-detail{
+    border-bottom: 1px solid #e6e6f6;
+}
+
+.detail-row {
+    text-align: center;
+    padding: 0.2rem;
+}
+
+.detail-row-header {
+    width: 20%;
+    min-width: 98px;
+    background: #e6e6f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detail-content {
+    width: 60%;
+    margin-left: 7px;
+}
+
+@media screen and (max-width: 600px) {
+    .detail-content {
+        width: 100%;
+    }
+}
