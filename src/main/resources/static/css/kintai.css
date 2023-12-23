@@ -12,6 +12,10 @@
     padding: 0.2rem;
 }
 
+.holiday-row {
+    background: #e5e8eb;
+}
+
 .detail-row-header {
     width: 20%;
     min-width: 98px;

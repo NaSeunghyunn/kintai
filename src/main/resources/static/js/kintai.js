@@ -58,7 +58,7 @@ const callback = {
             if(isWorkingData) {
                 $tbody.append(createEl.detail(detail, index));
             } else {
-                $tbody.append(createEl.defaultDetail(index));
+                $tbody.append(createEl.defaultDetail(detail, index));
             }
         });
     },
@@ -70,15 +70,19 @@ const callback = {
         $tr.find(".workType").text($("#detail-workType option:selected").text());
         let isWorkingDay = $("#detail-workType").val() === WORK_TYPE_WORK;
         if(isWorkingDay) {
+            $tr.removeClass("holiday-row");
             let startTime = $("#detail-start-hour").val() + ":" + $("#detail-start-minute").val();
             $tr.find(".startTime").text(startTime);
             let endTime = $("#detail-end-hour").val() + ":" + $("#detail-end-minute").val();
+            $tr.find(".time-class").text("〜");
             $tr.find(".endTime").text(endTime);
             $tr.find(".time-class").show();
             $tr.find(".workTime").text($("#detail-work-time").text());
             $tr.find(".breakTime").text($("#detail-break-time").val());
         } else {
+            $tr.addClass("holiday-row");
             $tr.find(".startTime").text("");
+            $tr.find(".time-class").text("");
             $tr.find(".endTime").text("");
             $tr.find(".time-class").hide();
             $tr.find(".workTime").text(0);
@@ -88,13 +92,14 @@ const callback = {
     }
 };
 const createEl = {
-    defaultDetail: function(index) {
+    defaultDetail: function(data, index) {
         const day = index + 1;
         const dayStr = day < 10 ? '0' + day : day;
         const dateStr = $("#yearMonth").val() + "-" + dayStr;
         const date = new Date(dateStr);
-        const isHoliday = dateCommon.isHoliday(date);
+        const isHoliday = data ? data.workType === WORK_TYPE_VACATION : dateCommon.isHoliday(date);
         const detail = {
+            "id": data?.id,
             "dayOfWeek": dayOfWeek.convertIndexToEn(date.getDay()),
             "day": day,
             "date": dateStr,
@@ -133,12 +138,12 @@ const createEl = {
     },
 
     detailHoliday : function(data, index) {
-            return $('<tr class="kintai-row" onclick="clickRow(' + index + ')" >' +
+            return $('<tr class="kintai-row holiday-row" onclick="clickRow(' + index + ')" >' +
                             '<td><span class="kintai-date">' + data.day + '</span></td>' +
                             '<td><span class="dayOfWeek">' + dayOfWeek.convertEnToJa(data.dayOfWeek) + '</span></td>' +
                             '<td><div class="d-flex">' +
                                 '<span class="startTime"></span>' +
-                                '<span></span>' +
+                                '<span class="time-class"></span>' +
                                 '<span class="endTime"></span>' +
                                 '</div>' +
                             '</td>' +
@@ -148,7 +153,7 @@ const createEl = {
                                 '<span class="workType">' + workType.convertEnToJa(data.workType) + '</span>' +
                                 '<div class="workDesc" data-info></div>' +
                                 '<div class="note" data-info></div>' +
-                                '<div class="id" data-info></div>' +
+                                '<div class="id" data-info="' + data.id + '"></div>' +
                                 '<div class="detailDate" data-info="' + data.date + '"></div>' +
                             '</td>' +
                         '</tr>');
@@ -186,7 +191,13 @@ function init() {
     initDate($("#yearMonth").val());
 
     $('#detail-workType').on('change', function() {
-        onVacation(isVacation(this.value));
+        let isVacationFlg = isVacation(this.value);
+        onVacation(isVacationFlg);
+        $("#detail-start-hour").val(isVacationFlg ? "" : "09");
+        $("#detail-start-minute").val(isVacationFlg ? "" : "00");
+        $("#detail-end-hour").val(isVacationFlg ? "" : "18");
+        $("#detail-end-minute").val(isVacationFlg ? "" : "00");
+        $("#detail-break-time").val(isVacationFlg ? "" : "1");
     });
 
     $("#detail-day").on('change', function() {
