@@ -18,11 +18,15 @@ public class Member extends BaseEntity{
     private Long id;
 
     @Column(nullable = false, unique = true)
+    private String loginId;
+
+    @Column(nullable = false)
     private String name;
 
     @Builder
-    public Member(Long id, String name) {
+    public Member(Long id, String loginId, String name) {
         this.id = id;
+        this.loginId = loginId;
         this.name = name;
     }
 }

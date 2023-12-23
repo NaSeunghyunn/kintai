@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class LoginService {
     private final MemberRepository memberRepository;
 
-    public LoginMember login(String name) {
-        Member member = memberRepository.findByName(name);
+    public LoginMember login(String loginId) {
+        Member member = memberRepository.findByLoginId(loginId);
         return member == null ? null : new LoginMember(member.getId(), member.getName());
     }
 }

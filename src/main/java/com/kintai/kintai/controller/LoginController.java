@@ -22,8 +22,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String name, @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request) {
-        LoginMember loginMember = loginService.login(name);
+    public String login(@RequestParam("loginId") String loginId, @RequestParam(name = "redirectURL", defaultValue = "/") String redirectURL, HttpServletRequest request) {
+        LoginMember loginMember = loginService.login(loginId);
         if (loginMember == null) {
             return "login/loginForm";
         }
