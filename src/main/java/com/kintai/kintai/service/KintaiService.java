@@ -38,5 +38,10 @@ public class KintaiService {
         }
         return kintaiIdOfMonth;
     }
+
+    public String download(Long memberId, YearMonth yearMonth) {
+
+        return null;
+    }
 }
 

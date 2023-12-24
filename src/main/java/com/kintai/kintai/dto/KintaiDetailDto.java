@@ -34,4 +34,19 @@ public class KintaiDetailDto {
         this.workDesc = workDesc;
         this.note = note;
     }
+
+    public static KintaiDetailDto kintaiDefault(LocalDate date) {
+        boolean isHoliday = date.getDayOfWeek() == DayOfWeek.SUNDAY || date.getDayOfWeek() == DayOfWeek.SATURDAY;
+        if(isHoliday) return holidayDefault(date);
+        return workingDayDefault(date);
+    }
+
+    public static KintaiDetailDto workingDayDefault(LocalDate date) {
+        return new KintaiDetailDto(null, date, LocalTime.of(9, 0, 0), LocalTime.of(18, 0, 0), 1, WorkType.WORK, "", "");
+    }
+
+    public static KintaiDetailDto holidayDefault(LocalDate date) {
+        return new KintaiDetailDto(null, date, null, null, 0, WorkType.VACATION, "", "");
+
+    }
 }
