@@ -32,7 +32,7 @@ public class ExcelService {
     private final KintaiRepository kintaiRepository;
     private final SmtExcelDownloader excelDownloader;
 
-    public File write(Long kintaiId) {
+    public byte[] write(Long kintaiId) {
         KintaiDto kintai = kintaiRepository.findKintaiOfMonth(kintaiId);
         return excelDownloader.write(kintai);
     }

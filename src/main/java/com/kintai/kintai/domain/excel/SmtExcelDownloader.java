@@ -33,11 +33,10 @@ public class SmtExcelDownloader {
     private static final int START_DETAIL_ROW_NUM = 6;
     private static final int TOTAL_WORK_TIME_CELL_NUM = 6;
 
-    public File write(KintaiDto kintai) {
+    public byte[] write(KintaiDto kintai) {
         YearMonth workYearMonth = kintai.getWorkYearMonth();
-        try (FileInputStream file = new FileInputStream(new File(new ClassPathResource(TEMPLATE_FILE_PATH).getURI()));
-             XSSFWorkbook workbook = new XSSFWorkbook(file);
-             FileOutputStream fileOut = new FileOutputStream(new File("output.xlsx"))) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             XSSFWorkbook workbook = new XSSFWorkbook(new ClassPathResource(TEMPLATE_FILE_PATH).getInputStream())) {
             XSSFSheet sheet = workbook.getSheetAt(0);
             sheet.getRow(NAME_ROW_NUM).getCell(NAME_CELL_NUM).setCellValue(kintai.getMemberName());
             String yearMonth = workYearMonth.format(DateTimeFormatter.ofPattern("yyyy年 MM月度"));
@@ -77,10 +76,8 @@ public class SmtExcelDownloader {
                 row.getCell(cellNum).setCellValue(detail.getNote());
             }
             sheet.getRow(++rowNum).getCell(TOTAL_WORK_TIME_CELL_NUM).setCellValue(timeUtils.toFormatTime(totalWorkTime));
-            workbook.write(fileOut);
-            return new File("output.xlsx");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            workbook.write(outputStream);
+            return outputStream.toByteArray();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
