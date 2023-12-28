@@ -20,11 +20,11 @@ const api = {
 
     saveDetail: function() {
         let body = {
-                    "kintaiId" : $("#kintai-id").val(),
-                    "date" : $("#detail-date").val(),
-                    "detailId" : $("#detail-id").val(),
-                    "workType" : $("#detail-workType").val(),
-                    "note" : $("#detail-note").val()
+                    kintaiId : $("#kintai-id").val(),
+                    date : $("#detail-date").val(),
+                    detailId : $("#detail-id").val(),
+                    workType : $("#detail-workType").val(),
+                    note : $("#detail-note").val()
         }
 
         let isWorkingDay = $("#detail-workType").val() === WORK_TYPE_WORK;
@@ -37,6 +37,15 @@ const api = {
         commonMethod.fetchPost(URL_KINTAI_DETAIL, body)
                     .then(data => callback.saveDetail(data))
                     .then(() => totalWorkTime());
+    },
+
+    submit : function(status) {
+        let body = {
+            id : $("#kintai-id").val(),
+            status : status
+        }
+        commonMethod.fetchPost(URL_KINTAI+"/submit", body)
+            .then(data => callback.submit(status))
     }
 };
 const callback = {
@@ -53,6 +62,15 @@ const callback = {
                 $tbody.append(createEl.defaultDetail(detail, index));
             }
         });
+
+        if(data.status === "COMPLETED") {
+            $("#inProgressDiv").hide();
+            $("#completedDiv").show();
+        } else {
+            $("#inProgressDiv").show();
+            $("#completedDiv").hide();
+        }
+        $("#submitDiv").show();
     },
 
     saveDetail: function(id) {
@@ -81,6 +99,16 @@ const callback = {
             $tr.find(".breakTime").text("");
         }
         $("#btn-modal-close").click();
+    },
+
+    submit: function(status) {
+        if(status === "COMPLETED") {
+            $("#inProgressDiv").hide();
+            $("#completedDiv").show();
+        } else {
+            $("#inProgressDiv").show();
+            $("#completedDiv").hide();
+        }
     }
 };
 const createEl = {
@@ -171,9 +199,9 @@ function getWorkTime(startTime, endTime, breakTimeHours) {
 
 function calWorkTime(startHour, startMinute, endHour, endMinute, breakTime) {
     let numberStartHour = Number(startHour);
-    let numberStartMinute = startMinute === "30" ? 0.5 : 0;
+    let numberStartMinute = Number(startMinute)/60;
     let numberEndHour = Number(endHour);
-    let numberEndMinute = endMinute === "30" ? 0.5 : 0;
+    let numberEndMinute = Number(endMinute)/60;
     let numberBreakTime = Number(breakTime);
     return numberEndHour + numberEndMinute - numberStartHour - numberStartMinute - numberBreakTime;
 }

@@ -1,15 +1,15 @@
 package com.kintai.kintai.repository.custom.impl;
 
-import com.kintai.kintai.domain.entity.Kintai;
-import com.kintai.kintai.domain.entity.Member;
 import com.kintai.kintai.dto.KintaiDetailDto;
 import com.kintai.kintai.dto.KintaiDto;
+import com.kintai.kintai.dto.KintaiTodayDto;
 import com.kintai.kintai.repository.custom.KintaiRepositoryCustom;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 
 import static com.kintai.kintai.domain.entity.QKintai.kintai;
@@ -35,6 +35,7 @@ public class KintaiRepositoryImpl implements KintaiRepositoryCustom {
                 .transform(groupBy(kintai.id).as(Projections.constructor(
                         KintaiDto.class,
                         kintai.id,
+                        kintai.status,
                         member.name,
                         kintai.workYearMonth,
                         list(Projections.constructor(
@@ -61,5 +62,28 @@ public class KintaiRepositoryImpl implements KintaiRepositoryCustom {
                         kintai.member.id.eq(memberId)
                         , kintai.workYearMonth.eq(yearMonth)
                 ).fetchFirst();
+    }
+
+    @Override
+    public KintaiTodayDto findToday(Long memberId) {
+        return queryFactory.select(Projections.constructor(
+                        KintaiTodayDto.class,
+                        kintai.id,
+                        kintaiDetail.id,
+                        kintaiDetail.date,
+                        kintaiDetail.startTime,
+                        kintaiDetail.endTime
+                ))
+                .from(kintai)
+                .leftJoin(kintaiDetail)
+                .on(
+                        kintaiDetail.kintai.eq(kintai),
+                        kintaiDetail.date.eq(LocalDate.now())
+                )
+                .where(
+                        kintai.member.id.eq(memberId),
+                        kintai.workYearMonth.eq(YearMonth.now())
+                )
+                .fetchFirst();
     }
 }

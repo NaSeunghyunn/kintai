@@ -1,6 +1,6 @@
 package com.kintai.kintai.service;
 
-import com.kintai.kintai.controller.form.KintaiSaveForm;
+import com.kintai.kintai.controller.form.KintaiSubmitForm;
 import com.kintai.kintai.domain.entity.Kintai;
 import com.kintai.kintai.domain.entity.Member;
 import com.kintai.kintai.dto.KintaiDto;
@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.YearMonth;
+
+import static com.kintai.kintai.domain.KintaiStatus.IN_PROGRESS;
 
 @RequiredArgsConstructor
 @Transactional
@@ -30,6 +32,7 @@ public class KintaiService {
         if (kintaiIdOfMonth == null) {
             Member member = memberRepository.getReferenceById(memberId);
             Kintai kintai = Kintai.builder()
+                    .status(IN_PROGRESS)
                     .member(member)
                     .workYearMonth(yearMonth)
                     .build();
@@ -39,9 +42,11 @@ public class KintaiService {
         return kintaiIdOfMonth;
     }
 
-    public String download(Long memberId, YearMonth yearMonth) {
-
-        return null;
+    public Long submit(KintaiSubmitForm form) {
+        Kintai kintai = kintaiRepository.findById(form.getId())
+                .orElseThrow(() -> new IllegalArgumentException("データが存在しません。"));
+        kintai.submit(form.getStatus());
+        return kintai.getId();
     }
 }
 
