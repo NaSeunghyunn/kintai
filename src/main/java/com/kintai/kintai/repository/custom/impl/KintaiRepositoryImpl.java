@@ -72,7 +72,8 @@ public class KintaiRepositoryImpl implements KintaiRepositoryCustom {
                         kintaiDetail.id,
                         kintaiDetail.date,
                         kintaiDetail.startTime,
-                        kintaiDetail.endTime
+                        kintaiDetail.endTime,
+                        kintaiDetail.breakTimeHours
                 ))
                 .from(kintai)
                 .leftJoin(kintaiDetail)

@@ -14,8 +14,9 @@ public class KintaiTodayDto {
     private LocalDate date;
     private LocalTime start;
     private LocalTime end;
+    private int breakTimeHours;
 
     public static KintaiTodayDto of(Long kintaiId) {
-        return new KintaiTodayDto(kintaiId, null, null, null, null);
+        return new KintaiTodayDto(kintaiId, null, null, null, null, 0);
     }
 }

@@ -65,7 +65,7 @@ let callback = {
             $("#end").attr("disabled", "disabled");
             $("#info-start").text(start);
             $("#info-end").text(end);
-            const workTime = timeToDecimal(end) - timeToDecimal(start);
+            const workTime = timeToDecimal(end) - timeToDecimal(start) - data.breakTimeHours;
             $("#info-work-time").text(workTime);
         } else {
             $("#info-time").hide();
@@ -88,7 +88,8 @@ let callback = {
         $("#end").val(end);
         $("#info-start").text(start);
         $("#info-end").text(end);
-        const workTime = timeToDecimal(end) - timeToDecimal(start);
+        let workTime = timeToDecimal(end) - timeToDecimal(start) -1;
+        if(workTime < 0) workTime = 0;
         $("#info-work-time").text(workTime);
     },
 
