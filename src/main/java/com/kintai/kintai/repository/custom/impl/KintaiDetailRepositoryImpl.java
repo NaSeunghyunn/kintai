@@ -19,7 +19,7 @@ public class KintaiDetailRepositoryImpl implements KintaiDetailRepositoryCustom 
         return queryFactory
                 .selectOne()
                 .from(kintaiDetail)
-                .join(kintaiDetail.kintai)
+                .join(kintaiDetail.kintai, kintai)
                 .where(
                         kintaiDetail.id.eq(id),
                         kintai.member.id.eq(memberId)

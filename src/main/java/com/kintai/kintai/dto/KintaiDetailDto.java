@@ -25,8 +25,8 @@ public class KintaiDetailDto {
     public KintaiDetailDto(Long id, LocalDate date, LocalTime startTime, LocalTime endTime, int breakTimeHours, WorkType workType, String workDesc, String note) {
         this.id = id;
         this.date = date;
-        this.dayOfWeek = date.getDayOfWeek();
-        this.day = date.getDayOfMonth();
+        this.dayOfWeek = date == null ? null : date.getDayOfWeek();
+        this.day = date == null ? 0 : date.getDayOfMonth();
         this.startTime = startTime;
         this.endTime = endTime;
         this.breakTimeHours = breakTimeHours;
@@ -37,7 +37,7 @@ public class KintaiDetailDto {
 
     public static KintaiDetailDto kintaiDefault(LocalDate date) {
         boolean isHoliday = date.getDayOfWeek() == DayOfWeek.SUNDAY || date.getDayOfWeek() == DayOfWeek.SATURDAY;
-        if(isHoliday) return holidayDefault(date);
+        if (isHoliday) return holidayDefault(date);
         return workingDayDefault(date);
     }
 

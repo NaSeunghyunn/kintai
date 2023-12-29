@@ -1,8 +1,7 @@
 package com.kintai.kintai.repository.custom.impl;
 
-import com.kintai.kintai.dto.KintaiDetailDto;
-import com.kintai.kintai.dto.KintaiDto;
-import com.kintai.kintai.dto.KintaiTodayDto;
+import com.kintai.kintai.domain.KintaiStatus;
+import com.kintai.kintai.dto.*;
 import com.kintai.kintai.repository.custom.KintaiRepositoryCustom;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -26,7 +25,7 @@ public class KintaiRepositoryImpl implements KintaiRepositoryCustom {
     public KintaiDto findKintaiOfMonth(Long kintaiId) {
         return queryFactory.selectFrom(kintai)
                 .innerJoin(kintai.member, member)
-                .innerJoin(kintaiDetail)
+                .leftJoin(kintaiDetail)
                 .on(kintaiDetail.kintai.eq(kintai))
                 .where(
                         kintai.id.eq(kintaiId)

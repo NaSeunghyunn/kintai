@@ -63,7 +63,7 @@ const callback = {
             }
         });
 
-        if(data.status === "COMPLETED") {
+        if(data?.status === "COMPLETED") {
             $("#inProgressDiv").hide();
             $("#completedDiv").show();
         } else {
