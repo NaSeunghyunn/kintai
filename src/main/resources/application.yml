@@ -4,13 +4,6 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-  devtools:
-    restart:
-      enabled: true
-    livereload:
-      enabled: true
-  thymeleaf:
-    cache: false
 
   jpa:
     hibernate:
