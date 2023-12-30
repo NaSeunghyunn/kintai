@@ -4,12 +4,14 @@ import com.kintai.kintai.domain.KintaiStatus;
 import com.kintai.kintai.dto.*;
 import com.kintai.kintai.repository.custom.KintaiRepositoryCustom;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.List;
 
 import static com.kintai.kintai.domain.entity.QKintai.kintai;
 import static com.kintai.kintai.domain.entity.QKintaiDetail.kintaiDetail;
@@ -86,4 +88,26 @@ public class KintaiRepositoryImpl implements KintaiRepositoryCustom {
                 )
                 .fetchFirst();
     }
+
+    @Override
+    public List<KintaiExcelList> findExcelTarget(KintaiExcelListCond condition) {
+        return queryFactory
+                .select(Projections.constructor(KintaiExcelList.class,
+                        kintai.id,
+                        kintai.workYearMonth,
+                        kintai.member.name
+                ))
+                .from(kintai)
+                .join(kintai.member, member)
+                .where(
+                        yearMonthEq(condition.getYearMonth()),
+                        kintai.status.eq(KintaiStatus.COMPLETED)
+                )
+                .fetch();
+    }
+
+    private BooleanExpression yearMonthEq(YearMonth yearMonth) {
+        return yearMonth == null ? null : kintai.workYearMonth.eq(yearMonth);
+    }
+
 }

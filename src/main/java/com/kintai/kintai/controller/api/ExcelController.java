@@ -19,7 +19,7 @@ public class ExcelController {
 
     private final ExcelService excelService;
 
-    @GetMapping("/download")
+    @GetMapping("/kintai")
     public ResponseEntity<Resource> downloadFile(@RequestParam("id") Long id) {
         byte[] excelData = excelService.write(id);
         HttpHeaders headers = new HttpHeaders();
