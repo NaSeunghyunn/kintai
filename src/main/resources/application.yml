@@ -1,6 +1,6 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: ${DB_DRIVER}
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -13,21 +13,6 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 50
-
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: debug
-        type:
-          descriptor:
-            sql:
-              BasicBinder: trace
-
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: true
 
 server:
   servlet:
