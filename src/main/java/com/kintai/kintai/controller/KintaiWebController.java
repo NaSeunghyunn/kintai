@@ -26,7 +26,8 @@ public class KintaiWebController {
     private final KintaiService kintaiService;
 
     @GetMapping()
-    public String init(@RequestParam("yearMonth") YearMonth yearMonth, @Login LoginMember member, Model model) {
+    public String init(@RequestParam(name = "yearMonth", required = false) YearMonth yearMonth, @Login LoginMember member, Model model) {
+        if (yearMonth == null) yearMonth = YearMonth.now();
         Long id = kintaiService.saveAndGetId(member.getId(), yearMonth);
         model.addAttribute("id", id);
         model.addAttribute("yearMonth", yearMonth);
