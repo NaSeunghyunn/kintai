@@ -126,7 +126,8 @@ const createEl = {
             "startTime": "09:00:00",
             "endTime": "18:00:00",
             "breakTimeHours": 1,
-            "workType": isHoliday ? WORK_TYPE_VACATION : WORK_TYPE_WORK
+            "workType": isHoliday ? WORK_TYPE_VACATION : WORK_TYPE_WORK,
+            "note": data?.note
         }
         if(isHoliday) return this.detailHoliday(detail, index);
         return this.detail(detail, index);
@@ -172,7 +173,7 @@ const createEl = {
                             '<td>' +
                                 '<span class="workType">' + workType.convertEnToJa(data.workType) + '</span>' +
                                 '<div class="workDesc" data-info></div>' +
-                                '<div class="note" data-info></div>' +
+                                '<div class="note" data-info="' + data?.note + '"></div>' +
                                 '<div class="id" data-info="' + data.id + '"></div>' +
                                 '<div class="detailDate" data-info="' + data.date + '"></div>' +
                             '</td>' +
