@@ -98,6 +98,7 @@ const callback = {
             $tr.find(".workTime").text(0);
             $tr.find(".breakTime").text("");
         }
+        $tr.find(".note").data("info", $("#detail-note").val());
         $("#btn-modal-close").click();
     },
 
