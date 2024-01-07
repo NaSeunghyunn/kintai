@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="navFragment">
+    <div class="offcanvas offcanvas-end" id="offcanvas-kintai">
+        <div class="offcanvas-header">
+            <h1 class="offcanvas-title">勤怠</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav me-auto">
+                <li class="offcanvas-item text-center p-3">
+                    <a class="nav-link" href="/">ホーム</a>
+                </li>
+                <li class="offcanvas-item text-center p-3">
+                    <a class="nav-link" href="/kintai">詳細</a>
+                </li>
+                <li class="offcanvas-item text-center p-3">
+                    <a class="nav-link" href="/kintai/excel">Excel</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">勤怠</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-kintai">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="nav-kintai">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/kintai">詳細</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/kintai/excel">Excel</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</th:block>
+</html>

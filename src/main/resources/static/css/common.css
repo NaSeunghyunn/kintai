@@ -1,0 +1,15 @@
+.offcanvas-item:active, .offcanvas-item:hover {
+  background-color: #e5f1ff;
+}
+
+.offcanvas-item {
+    border-bottom: 1px solid #e5f1ff;
+}
+
+.offcanvas-item:last-child {
+    border-bottom: none;
+}
+
+body {
+    padding-top: 25px;
+}

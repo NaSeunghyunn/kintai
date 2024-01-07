@@ -1,0 +1,9 @@
+#info-start:before {
+    content: "開始：";
+}
+#info-end:before {
+    content: "終了：";
+}
+#info-work-time:before {
+    content: "実施：";
+}

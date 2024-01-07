@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/layout">
+
+<title layout:fragment="title">勤怠</title>
+
+<th:block layout:fragment="css">
+  <link rel="stylesheet" href="/css/kintai.css">
+</th:block>
+
+<th:block layout:fragment="script">
+  <script src="/js/dateCommon.js"></script>
+  <script src="/js/kintaiCommon.js"></script>
+  <script src="/js/kintai.js"></script>
+</th:block>
+
+<th:block layout:fragment="content">
+  <div class="container mb-100">
+    <div class="py-2">
+      勤怠管理
+    </div>
+    <div class="d-flex justify-content-between p-2">
+      <div id="title-yearMonth" class="bg-light"></div>
+      <div class="d-flex bg-light">
+        <div class="px-2">氏名</div>
+        <div id="memName" class="fw-bold" th:text="${memberName}"></div>
+      </div>
+    </div>
+    <table class="table table-bordered table-sm mb-5">
+      <thead class="table-success">
+      <tr>
+        <th>日付</th>
+        <th>曜日</th>
+        <th>勤務時間</th>
+        <th>実施</th>
+        <th>休憩</th>
+        <th>勤務</th>
+      </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <footer class="fixed-bottom bg-light">
+      <!-- Footer content goes here -->
+      <div class="container">
+        <div class="d-flex justify-content-between py-2">
+          <div class="d-flex">
+            <div class="border p-1">合計</div>
+            <div class="border p-1 fw-bold" id="total-work-time"></div>
+          </div>
+          <div id="submitDiv" style="display: none;">
+            <div id="inProgressDiv">
+              <span>未提出です。</span>
+              <button class="btn btn-danger" id="btn-submit" onclick="api.submit('COMPLETED')">提出</button>
+            </div>
+            <div id="completedDiv">
+              <span>提出済です。</span>
+              <button class="btn btn-success" id="btn-cancel" onclick="api.submit('IN_PROGRESS')">取消</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <button type="button" class="btn btn-primary d-none" id="detail-btn" data-bs-toggle="modal" data-bs-target="#kintaiDetailModal">
+    Open modal
+  </button>
+  <!-- The Modal -->
+  <div class="modal fade" id="kintaiDetailModal">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-title"></h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div>
+            <div class="d-flex">
+              <select class="form-select form-select-lg" id="detail-day" style="width: 100px">
+              </select>
+              <span class="h3 align-self-center mx-3" id="detail-dayOfWeek"></span>
+            </div>
+
+            <div class="d-flex my-1 kintai-detail">
+              <div class="detail-row detail-row-header">勤務</div>
+              <div class="detail-row detail-content d-flex">
+                <select class="form-select form-select-lg" id="detail-workType" style="width: 100px">
+                  <option value="WORK" selected>出勤</option>
+                  <option value="VACATION">休み</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="d-flex my-1 kintai-detail">
+              <div class="detail-row detail-row-header">開始</div>
+              <div class="detail-row detail-content d-flex">
+                <select class="form-select form-select-lg" id="detail-start-hour" onchange="changeTime();">
+                  <option selected>09</option>
+                  <option>10</option>
+                  <option>11</option>
+                  <option>12</option>
+                  <option>13</option>
+                </select>
+                <span class="align-self-center mx-1">時</span>
+                <select class="form-select form-select-lg ms-3" id="detail-start-minute" onchange="changeTime();">
+                  <option selected>00</option>
+                  <option>30</option>
+                </select>
+                <span class="align-self-center mx-1">分</span>
+              </div>
+            </div>
+
+            <div class="d-flex my-1 kintai-detail">
+              <div class="detail-row detail-row-header">終了</div>
+              <div class="detail-row detail-content d-flex">
+                <select class="form-select form-select-lg" id="detail-end-hour" onchange="changeTime();">
+                  <option>13</option>
+                  <option>14</option>
+                  <option>15</option>
+                  <option>16</option>
+                  <option>17</option>
+                  <option selected>18</option>
+                  <option>19</option>
+                  <option>20</option>
+                  <option>21</option>
+                  <option>22</option>
+                </select>
+                <span class="align-self-center mx-1">時</span>
+                <select class="form-select form-select-lg ms-3" id="detail-end-minute" onchange="changeTime();">
+                  <option selected>00</option>
+                  <option>30</option>
+                </select>
+                <span class="align-self-center mx-1">分</span>
+              </div>
+            </div>
+
+            <div class="d-flex my-1 kintai-detail">
+              <div class="detail-row detail-row-header">休憩</div>
+              <div class="detail-row detail-content d-flex">
+                <select class="form-select form-select-lg" id="detail-break-time" style="width: 100px" onchange="changeTime();">
+                  <option>0</option>
+                  <option selected>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </select>
+                <span class="align-self-center mx-1">時間</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex my-1 kintai-detail">
+            <div class="detail-row detail-row-header">作業内容</div>
+            <div class="detail-row detail-content d-flex">
+              <input type="text" class="form-control" id="detail-work-desc" />
+            </div>
+          </div>
+
+          <div class="d-flex my-1 kintai-detail">
+            <div class="detail-row detail-row-header">備考</div>
+            <div class="detail-row detail-content d-flex">
+              <input type="text" class="form-control" id="detail-note" />
+              <div class="form-check align-self-center ms-2">
+                <input class="form-check-input" type="checkbox" id="chk-holiday" onclick="checkHoliday();">
+                <label class="form-check-label">祝</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <div class="position-absolute" style="left: 10px;">
+            <span class="border p-2">実施時間</span><span class="border p-2 fw-bold" id="detail-work-time"></span>
+          </div>
+          <button type="button" class="btn btn-success" onclick="api.saveDetail();">保存</button>
+          <button type="button" class="btn btn-danger" id="btn-modal-close" data-bs-dismiss="modal">閉じる</button>
+        </div>
+        <input type="hidden" id="detail-id">
+        <input type="hidden" id="detail-date">
+      </div>
+    </div>
+  </div>
+  <input type="hidden" id="kintai-id" th:value="${id}">
+  <input type="hidden" id="yearMonth" th:value="${yearMonth}">
+</th:block>
+</html>
