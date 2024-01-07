@@ -4,9 +4,9 @@ REPOSITORY="/home/ec2-user/app/git"
 PROJECT_NAME="kintai"
 JAR_FILE=$(ls -tr $REPOSITORY/ | grep SNAPSHOT.jar | tail -n 1)
 
-APP_LOG="$PROJECT_ROOT/application.log"
-ERROR_LOG="$PROJECT_ROOT/error.log"
-DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
+APP_LOG="$REPOSITORY/application.log"
+ERROR_LOG="$REPOSITORY/error.log"
+DEPLOY_LOG="$REPOSITORY/deploy.log"
 
 TIME_NOW=$(date +%c)
 
