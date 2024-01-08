@@ -3,7 +3,7 @@
 REPOSITORY="/home/ec2-user/app/git"
 PROJECT_NAME="kintai"
 JAR_FILE=$(ls -tr $REPOSITORY/ | grep SNAPSHOT.jar | tail -n 1)
-echo "> JAR FILE : $JAR_FILE"
+echo "> JAR FILE : $JAR_FILE" >> $DEPLOY_LOG
 
 APP_LOG="$REPOSITORY/application.log"
 ERROR_LOG="$REPOSITORY/error.log"
@@ -19,5 +19,5 @@ cp $REPOSITORY/$PROJECT_NAME/build/libs/*.jar $REPOSITORY/
 echo ">>> $TIME_NOW > $JAR_FILE 実行" >> $DEPLOY_LOG
 nohup java -jar $REPOSITORY/$JAR_FILE > $APP_LOG 2> $ERROR_LOG &
 
-CURRENT_PID=$(pgrep -f $JAR_FILE)
-echo ">>> $TIME_NOW > 実行したプロセス： $CURRENT_PID" >> $DEPLOY_LOG
+CURRENT_PID=$(pgrep -f ${PROJECT_NAME}.*.jar)
+echo ">>> $TIME_NOW > 実行したプロセス PID： $CURRENT_PID" >> $DEPLOY_LOG
