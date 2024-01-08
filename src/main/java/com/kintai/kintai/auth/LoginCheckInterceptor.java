@@ -11,6 +11,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
+        if(requestURI.equals("/profile")) {
+            return true;
+        }
+
         if (request.getQueryString() != null) {
             requestURI += "?" + request.getQueryString();
         }
