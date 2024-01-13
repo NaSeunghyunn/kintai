@@ -29,5 +29,6 @@ nohup java -jar \
   -Dspring.profiles.active=$IDLE_PROFILE \
   $REPOSITORY/$JAR_FILE > $APP_LOG 2> $ERROR_LOG &
 
+sleep 20
 CURRENT_PID=$(pgrep -f ${PROJECT_NAME}.*.jar)
 echo ">>> $TIME_NOW > 実行したプロセス PID： $CURRENT_PID" >> $DEPLOY_LOG
