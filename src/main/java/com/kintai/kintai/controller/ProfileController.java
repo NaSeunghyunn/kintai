@@ -12,13 +12,15 @@ import java.util.List;
 @RestController
 public class ProfileController {
     private final Environment env;
+    private final List<String> realProfiles = Arrays.asList("real1", "real2");
 
     @GetMapping("/profile")
     public String profile() {
         List<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        String defaultProfile = activeProfiles.isEmpty() ? "default" : activeProfiles.get(0);
         return activeProfiles.stream()
-                .filter(profile -> profile.equals("real2"))
+                .filter(realProfiles::contains)
                 .findAny()
-                .orElse("real1");
+                .orElse(defaultProfile);
     }
 }

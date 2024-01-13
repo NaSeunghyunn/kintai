@@ -9,8 +9,10 @@ import static org.assertj.core.api.Assertions.*;
 
 class ProfileControllerUnitTest {
 
-    private final String REAL1 = "real1";
-    private final String REAL2 = "real2";
+    private final String RESULT_REAL1 = "real1";
+    private final String RESULT_REAL2 = "real2";
+    private final String RESULT_DEFAULT = "default";
+    private final String RESULT_SOMETHING = "something";
     private MockEnvironment env;
     private ProfileController controller;
 
@@ -21,10 +23,10 @@ class ProfileControllerUnitTest {
     }
 
     @Test
-    @DisplayName("active_Profileが存在しないと「rea1」がデフォルト")
+    @DisplayName("active_Profileが存在しないと「default」が出力される")
     void no_active_profile() {
         // given
-        String expectedProfile = REAL1;
+        String expectedProfile = RESULT_DEFAULT;
 
         // when
         String profile = controller.profile();
@@ -37,7 +39,7 @@ class ProfileControllerUnitTest {
     @DisplayName("real1が照会する")
     void real1_profile() {
         // given
-        String expectedProfile = REAL1;
+        String expectedProfile = RESULT_REAL1;
         env.addActiveProfile(expectedProfile);
 
         // when
@@ -51,7 +53,7 @@ class ProfileControllerUnitTest {
     @DisplayName("real2が照会する")
     void real2_profile() {
         // given
-        String expectedProfile = REAL2;
+        String expectedProfile = RESULT_REAL2;
         env.addActiveProfile(expectedProfile);
 
         // when
@@ -62,11 +64,11 @@ class ProfileControllerUnitTest {
     }
 
     @Test
-    @DisplayName("real_profileが存在しないと「real1」がデフォルト")
+    @DisplayName("real_profileが存在しないと最初目のprofileが出力される")
     void no_real_profile() {
         // given
-        String expectedProfile = REAL1;
-        env.addActiveProfile("something");
+        String expectedProfile = RESULT_SOMETHING;
+        env.addActiveProfile(RESULT_SOMETHING);
 
         // when
         String profile = controller.profile();
