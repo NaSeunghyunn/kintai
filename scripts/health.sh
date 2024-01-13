@@ -3,7 +3,7 @@
 ABSPATH=$(readlink -f $0)
 ABSDIR=$(dirname $ABSPATH)
 source ${ABSDIR}/profile.sh
-source ${ABSDIR}/switch,sh
+source ${ABSDIR}/switch.sh
 
 DEPLOY_LOG="$REPOSITORY/deploy.log"
 
