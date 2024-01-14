@@ -27,7 +27,7 @@ echo ">>> $TIME_NOW > $JAR_FILE を${IDLE_PROFILE} で実行" >> $DEPLOY_LOG
 nohup java -jar \
   -Dspring.config.location=classpath:/application.yml,classpath:/application-$IDLE_PROFILE.yml \
   -Dspring.profiles.active=$IDLE_PROFILE \
-  $REPOSITORY/$JAR_FILE > $APP_LOG 2> $ERROR_LOG &
+  $JAR_FILE > $APP_LOG 2> $ERROR_LOG &
 
 sleep 20
 CURRENT_PID=$(pgrep -f ${PROJECT_NAME}.*.jar)
