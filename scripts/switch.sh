@@ -4,7 +4,8 @@ ABSPATH=${readlink -f $0}
 ABSDIR=${dirname ${ABSPATH}}
 source ${ABSDIR}/profile.sh
 
-DEPLOY_LOG="$ABSDIR/../logs/deploy.log"
+REPOSITORY="/home/ec2-user/app/git"
+DEPLOY_LOG="$REPOSITORY/deploy.log"
 
 TIME_NOW=$(date +%c)
 
