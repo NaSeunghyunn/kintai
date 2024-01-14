@@ -5,7 +5,7 @@ ABSDIR=$(dirname $ABSPATH)
 source ${ABSDIR}/profile.sh
 
 TIME_NOW=$(date +%c)
-DEPLOY_LOG="$REPOSITORY/deploy.log"
+DEPLOY_LOG="$ABSDIR/../logs/deploy.log"
 
 IDLE_PORT=$(find_idle_port)
 

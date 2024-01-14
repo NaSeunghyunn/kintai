@@ -10,9 +10,9 @@ PROJECT_NAME="kintai"
 JAR_FILE=$(ls -tr $REPOSITORY/*.jar | grep SNAPSHOT.jar | tail -n 1)
 echo "> JAR FILE : $JAR_FILE" >> $DEPLOY_LOG
 
-APP_LOG="$REPOSITORY/application.log"
-ERROR_LOG="$REPOSITORY/error.log"
-DEPLOY_LOG="$REPOSITORY/deploy.log"
+APP_LOG="$ABSDIR/../logs/application.log"
+ERROR_LOG="$ABSDIR/../logs/error.log"
+DEPLOY_LOG="$ABSDIR/../logs/deploy.log"
 
 TIME_NOW=$(date +%c)
 

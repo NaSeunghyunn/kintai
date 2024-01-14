@@ -5,7 +5,7 @@ ABSDIR=$(dirname $ABSPATH)
 source ${ABSDIR}/profile.sh
 source ${ABSDIR}/switch.sh
 
-DEPLOY_LOG="$REPOSITORY/deploy.log"
+DEPLOY_LOG="$ABSDIR/../logs/deploy.log"
 
 TIME_NOW=$(date +%c)
 

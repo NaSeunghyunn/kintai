@@ -4,7 +4,7 @@ ABSPATH=${readlink -f $0}
 ABSDIR=${dirname ${ABSPATH}}
 source ${ABSDIR}/profile.sh
 
-DEPLOY_LOG="$REPOSITORY/deploy.log"
+DEPLOY_LOG="$ABSDIR/../logs/deploy.log"
 
 TIME_NOW=$(date +%c)
 
