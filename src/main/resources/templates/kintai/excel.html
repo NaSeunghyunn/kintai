@@ -39,7 +39,7 @@
                 <tr th:each="excelList : ${excelLists}">
                     <td><span th:text="${excelList.yearMonth}"></span></td>
                     <td><span class="member-name" th:text="${excelList.memberName}"></span></td>
-                    <td><a th:href="@{/api/excel/kintai(id=${excelList.id})}">ダウンロード</a></td>
+                    <td><a th:href="@{/api/excel/kintai(id=${excelList.id}, type='MOA')}">ダウンロード</a></td>
                 </tr>
             </tbody>
         </table>
