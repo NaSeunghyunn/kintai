@@ -18,3 +18,21 @@
 .w-40 {
     width: 40%;
 }
+
+.company-item {
+    padding: 10px;
+    border: 1px solid #b2b2b2;
+    border-radius: 17px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.company-lnk {
+    color: #7a7a7a;
+}
+
+.company-lnk:hover {
+    color: #626262;
+    font-weight: bold;
+    letter-spacing: 5px;
+}

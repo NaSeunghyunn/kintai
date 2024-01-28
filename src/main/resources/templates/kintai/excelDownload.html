@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/layout">
+
+<title layout:fragment="title">Excelダウンロード</title>
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" href="/css/excel.css">
+</th:block>
+
+<th:block layout:fragment="script">
+    <script src="/js/excel.js"></script>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div class="container">
+        <form th:action="@{/kintai/excel}" th:object="${form}" method="get">
+            <div class="d-flex justify-content-between mt-5 mb-2">
+                <div class="align-self-end">
+                    <select th:field="*{yearMonth}" class="form-select" onchange="submitForm();">
+                        <option th:each="item : ${yearMonths}" th:value="${item}" th:text="${item}"></option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" id="memberName" th:field="*{memberName}" class="form-control" placeholder="メンバー" onkeyup="searchMemberName();">
+                </div>
+            </div>
+        </form>
+        <table class="table table-bordered table-sm mb-5">
+            <thead class="table-success">
+                <tr class="drag-none">
+                    <th>日付</th>
+                    <th>メンバー</th>
+                    <th>勤怠表</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr th:each="excelList : ${excelLists}">
+                    <td><span th:text="${excelList.yearMonth}"></span></td>
+                    <td><span class="member-name" th:text="${excelList.memberName}"></span></td>
+                    <td><a th:href="@{/api/excel/kintai(id=${excelList.id}, type=${company})}">ダウンロード</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</th:block>
+</html>
