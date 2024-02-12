@@ -1,6 +1,9 @@
 package com.kintai.kintai.controller.api;
 
+import com.kintai.kintai.auth.Login;
+import com.kintai.kintai.auth.LoginMember;
 import com.kintai.kintai.domain.CompanyType;
+import com.kintai.kintai.dto.FileDto;
 import com.kintai.kintai.service.ExcelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -21,14 +24,15 @@ public class ExcelController {
     private final ExcelService excelService;
 
     @GetMapping("/kintai")
-    public ResponseEntity<Resource> downloadFile(@RequestParam("id") Long id, @RequestParam("type") CompanyType type) {
-        byte[] excelData = excelService.write(id, type);
+    public ResponseEntity<Resource> downloadFile(@RequestParam("id") Long id, @RequestParam("type") CompanyType type, @Login LoginMember member) {
+        FileDto excelData = excelService.write(id, type, member.getName());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", "kintai.xlsx");
+
+        headers.setContentDispositionFormData("attachment", excelData.getFileName());
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(new ByteArrayResource(excelData));
+                .body(new ByteArrayResource(excelData.getFile()));
     }
 }

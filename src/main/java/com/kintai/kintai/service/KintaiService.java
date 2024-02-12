@@ -3,13 +3,13 @@ package com.kintai.kintai.service;
 import com.kintai.kintai.controller.form.KintaiSubmitForm;
 import com.kintai.kintai.domain.entity.Kintai;
 import com.kintai.kintai.domain.entity.Member;
+import com.kintai.kintai.domain.utils.KintaiBuilder;
 import com.kintai.kintai.dto.KintaiDto;
 import com.kintai.kintai.dto.KintaiExcelList;
 import com.kintai.kintai.dto.KintaiExcelListCond;
 import com.kintai.kintai.repository.KintaiRepository;
 import com.kintai.kintai.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +25,12 @@ public class KintaiService {
 
     private final KintaiRepository kintaiRepository;
     private final MemberRepository memberRepository;
+    private final KintaiBuilder builder;
 
     @Transactional(readOnly = true)
     public KintaiDto findKintai(Long kintaiId) {
-        return kintaiRepository.findKintaiOfMonth(kintaiId);
+        KintaiDto kintai = kintaiRepository.findKintaiOfMonth(kintaiId);
+        return builder.populateMissingDetails(kintai);
     }
 
     public Long saveAndGetId(Long memberId, YearMonth yearMonth) {
@@ -57,4 +59,3 @@ public class KintaiService {
         return kintaiRepository.findExcelTarget(condition);
     }
 }
-

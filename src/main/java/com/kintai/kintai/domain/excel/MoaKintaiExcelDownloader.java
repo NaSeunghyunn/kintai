@@ -53,21 +53,17 @@ public class MoaKintaiExcelDownloader implements KintaiExcelDownloader {
             CellCopyPolicy ccp = new CellCopyPolicy();
             int endOfMonth = workYearMonth.atEndOfMonth().getDayOfMonth();
             sheet.shiftRows(START_DETAIL_ROW_NUM, sheet.getLastRowNum(), endOfMonth - 1, true, false);
-            Map<Integer, KintaiDetailDto> details = kintai.getDetails().stream().collect(Collectors.toMap(KintaiDetailDto::getDay, v -> v));
 
             int rowNum = START_DETAIL_ROW_NUM;
-            for (int day = 1; day <= endOfMonth; day++) {
+            for (KintaiDetailDto detail : kintai.getDetails()) {
                 XSSFRow row = rowTemp;
-                if (day != endOfMonth) {
+                if (detail.getDay() != endOfMonth) {
                     row = sheet.createRow(rowNum++);
                     row.copyRowFrom(rowTemp, ccp);
                 }
 
-                LocalDate date = workYearMonth.atDay(day);
-                KintaiDetailDto detail = details.getOrDefault(day, KintaiDetailDto.kintaiDefault(date));
-
                 int cellNum = START_DETAIL_CELL_NUM;
-                row.getCell(cellNum++).setCellValue(workYearMonth.atDay(day));
+                row.getCell(cellNum++).setCellValue(detail.getDate());
                 row.getCell(cellNum++).setCellValue(detail.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.JAPANESE));
                 if (detail.getStartTime() != null) {
                     row.getCell(cellNum).setCellValue(timeUtils.formatTime(detail.getStartTime()));

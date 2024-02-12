@@ -48,15 +48,13 @@ public class SmtKintaiExcelDownloader implements KintaiExcelDownloader {
             CellCopyPolicy ccp = new CellCopyPolicy();
             int endOfMonth = workYearMonth.atEndOfMonth().getDayOfMonth();
             sheet.shiftRows(START_DETAIL_ROW_NUM, sheet.getLastRowNum(), endOfMonth - 1, true, false);
-            Map<Integer, KintaiDetailDto> details = kintai.getDetails().stream().collect(Collectors.toMap(KintaiDetailDto::getDay, v -> v));
 
             double totalWorkTime = 0;
             int rowNum = START_DETAIL_ROW_NUM;
-            for (int day = 1; day <= endOfMonth; day++) {
-                LocalDate date = workYearMonth.atDay(day);
-                KintaiDetailDto detail = details.getOrDefault(day, KintaiDetailDto.kintaiDefault(date));
-                XSSFRow row = day == endOfMonth ? rowTemp : sheet.createRow(rowNum++);
-                if (day != endOfMonth) {
+            for (KintaiDetailDto detail : kintai.getDetails()) {
+                XSSFRow row = rowTemp;
+                if (detail.getDay() != endOfMonth) {
+                    row = sheet.createRow(rowNum++);
                     row.copyRowFrom(rowTemp, ccp);
                 }
                 int cellNum = 0;

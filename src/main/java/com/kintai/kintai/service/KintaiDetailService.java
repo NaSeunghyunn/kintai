@@ -1,7 +1,6 @@
 package com.kintai.kintai.service;
 
 import com.kintai.kintai.controller.form.KintaiDetailSaveForm;
-import com.kintai.kintai.domain.KintaiStatus;
 import com.kintai.kintai.domain.entity.Kintai;
 import com.kintai.kintai.domain.entity.KintaiDetail;
 import com.kintai.kintai.dto.KintaiTodayDto;
@@ -26,8 +25,12 @@ public class KintaiDetailService {
 
     public Long save(KintaiDetailSaveForm saveForm) {
         Kintai kintai = kintaiRepository.getReferenceById(saveForm.getKintaiId());
+        Long detailId = saveForm.getDetailId();
+        if (detailId == null) {
+            detailId = kintaiDetailRepository.findId(kintai, saveForm.getDate());
+        }
         KintaiDetail kintaiDetail = KintaiDetail.builder()
-                .id(saveForm.getDetailId())
+                .id(detailId)
                 .kintai(kintai)
                 .date(saveForm.getDate())
                 .startTime(saveForm.getStartTime())
